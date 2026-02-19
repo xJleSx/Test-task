@@ -59,7 +59,7 @@ const EducationPage: React.FC = () => {
           onClick={() => setIsModalOpen(true)}
           icon={<span>+</span>}
         >
-          Добавить
+          Добавить образование
         </Button>
       </div>
 

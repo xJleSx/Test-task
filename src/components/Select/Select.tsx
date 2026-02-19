@@ -12,6 +12,7 @@ interface SelectProps {
   onChange: (value: string) => void;
   placeholder?: string;
   required?: boolean;
+  hideRequiredStar?: boolean;
 }
 
 export const Select: React.FC<SelectProps> = ({
@@ -20,6 +21,7 @@ export const Select: React.FC<SelectProps> = ({
   onChange,
   placeholder = 'Выберите...',
   required = false,
+  hideRequiredStar = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -42,8 +44,9 @@ export const Select: React.FC<SelectProps> = ({
         className={`${styles.selected} ${isOpen ? styles.open : ''}`}
         onClick={() => setIsOpen(!isOpen)}
       >
-        {selectedLabel}
-        {required && <span className={styles.required}>*</span>}
+        <span className={styles.selectedText}>{selectedLabel}</span>
+        <span className={styles.arrow}>{isOpen ? '▲' : '▼'}</span>
+        {required && !hideRequiredStar && <span className={styles.required}>*</span>}
       </div>
       {isOpen && (
         <ul className={styles.options}>

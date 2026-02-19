@@ -16,6 +16,8 @@ const yearOptions = Array.from({ length: maxYear - 1980 + 1 }, (_, i) => ({
   label: String(1980 + i)
 }));
 
+const startYearOptions = [{ value: '', label: 'Не выбран' }, ...yearOptions];
+
 const studyFormOptions = [
   { value: 'full-time', label: 'Очная' },
   { value: 'part-time', label: 'Заочная' },
@@ -37,9 +39,9 @@ export const EducationForm: React.FC<EducationFormProps> = ({ isOpen, onClose })
     defaultValues: {
       institution: '',
       specialty: '',
-      startYear: currentYear,
+      startYear: null,
       endYear: null,
-      studyForm: 'full-time',
+      studyForm: '',
       documents: []
     }
   });
@@ -99,7 +101,8 @@ export const EducationForm: React.FC<EducationFormProps> = ({ isOpen, onClose })
             <label>Учебное заведение</label>
             <textarea
               {...register('institution')}
-              className={errors.institution ? styles.error : ''}
+              className={`${styles.input} ${errors.institution ? styles.error : ''}`}
+              rows={2}
             />
             {errors.institution && <span className={styles.errorMessage}>{errors.institution.message}</span>}
           </div>
@@ -109,7 +112,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({ isOpen, onClose })
             <input
               type="text"
               {...register('specialty')}
-              className={errors.specialty ? styles.error : ''}
+              className={`${styles.input} ${errors.specialty ? styles.error : ''}`}
             />
             {errors.specialty && <span className={styles.errorMessage}>{errors.specialty.message}</span>}
           </div>
@@ -122,10 +125,12 @@ export const EducationForm: React.FC<EducationFormProps> = ({ isOpen, onClose })
                 control={control}
                 render={({ field }) => (
                   <Select
-                    options={yearOptions}
-                    value={String(field.value)}
-                    onChange={(val) => field.onChange(Number(val))}
+                    options={startYearOptions}
+                    value={field.value === null ? '' : String(field.value)}
+                    onChange={(val) => field.onChange(val ? Number(val) : null)}
+                    placeholder="Не выбран"
                     required
+                    hideRequiredStar
                   />
                 )}
               />
@@ -142,6 +147,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({ isOpen, onClose })
                     options={[{ value: '', label: 'Не выбрано' }, ...yearOptions]}
                     value={field.value ? String(field.value) : ''}
                     onChange={(val) => field.onChange(val ? Number(val) : null)}
+                    placeholder="Не выбрано"
                   />
                 )}
               />
@@ -157,9 +163,11 @@ export const EducationForm: React.FC<EducationFormProps> = ({ isOpen, onClose })
               render={({ field }) => (
                 <Select
                   options={studyFormOptions}
-                  value={field.value}
+                  value={field.value || ''}
                   onChange={field.onChange}
+                  placeholder="Выберите форму"
                   required
+                  hideRequiredStar
                 />
               )}
             />
@@ -174,6 +182,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({ isOpen, onClose })
               accept=".pdf,.jpg,.png,.doc,.docx"
               ref={fileInputRef}
               onChange={handleFileChange}
+              className={styles.fileInput}
             />
             <SelectedFiles files={selectedFiles} onRemove={handleRemoveFile} />
           </div>

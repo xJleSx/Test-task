@@ -9,16 +9,19 @@ export const educationSchema = z.object({
     .min(1, 'Обязательное поле')
     .max(256)
     .regex(/^[а-яА-Яa-zA-Z0-9\s]+$/, 'Только буквы и цифры'),
-  startYear: z.number().min(1980).max(maxYear),
+  startYear: z.number().min(1980).max(maxYear).nullable().refine(val => val !== null, { message: 'Обязательное поле' }),
   endYear: z.number().min(1980).max(maxYear).optional().nullable(),
-  studyForm: z.enum(['full-time', 'part-time', 'mixed', 'distance']),
+  studyForm: z.enum(['full-time', 'part-time', 'mixed', 'distance'], {
+    required_error: 'Обязательное поле',
+    invalid_type_error: 'Обязательное поле'
+  }).nullable().refine(val => val !== null, { message: 'Обязательное поле' }),
   documents: z.array(z.object({
     name: z.string(),
     type: z.string(),
     dataURL: z.string()
   })).optional().default([])
 }).refine(data => {
-  if (data.endYear && data.endYear < data.startYear) {
+  if (data.endYear && data.startYear && data.endYear < data.startYear) {
     return false;
   }
   return true;
@@ -26,7 +29,7 @@ export const educationSchema = z.object({
   message: 'Год окончания не может быть раньше года начала',
   path: ['endYear']
 }).refine(data => {
-  if (data.endYear && (data.endYear - data.startYear > 11)) {
+  if (data.endYear && data.startYear && (data.endYear - data.startYear > 11)) {
     return false;
   }
   return true;
@@ -34,7 +37,7 @@ export const educationSchema = z.object({
   message: 'Продолжительность обучения не может превышать 11 лет',
   path: ['endYear']
 }).refine(data => {
-  if (data.endYear && (data.endYear - data.startYear < 1)) {
+  if (data.endYear && data.startYear && (data.endYear - data.startYear < 1)) {
     return false;
   }
   return true;
