@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import styles from './CustomSelect.module.scss';
+import styles from './Select.module.scss';
 
 interface Option {
   value: string;
   label: string;
 }
 
-interface CustomSelectProps {
+interface SelectProps {
   options: Option[];
   value: string;
   onChange: (value: string) => void;
@@ -14,7 +14,7 @@ interface CustomSelectProps {
   required?: boolean;
 }
 
-export const CustomSelect: React.FC<CustomSelectProps> = ({
+export const Select: React.FC<SelectProps> = ({
   options,
   value,
   onChange,

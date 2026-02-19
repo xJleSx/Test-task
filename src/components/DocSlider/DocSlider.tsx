@@ -6,11 +6,11 @@ import 'swiper/css/navigation';
 import styles from './DocSlider.module.scss';
 import { EducationDocument } from '../../types/education';
 
-interface DocumentSliderProps {
+interface DocSliderProps {
   documents: EducationDocument[];
 }
 
-export const DocumentSlider: React.FC<DocumentSliderProps> = ({ documents }) => {
+export const DocSlider: React.FC<DocSliderProps> = ({ documents }) => {
   if (!documents.length) {
     return <p className={styles.empty}>Нет загруженных документов</p>;
   }

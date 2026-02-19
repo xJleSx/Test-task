@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useEducationStore } from '../../store/educationStore';
 import { Button } from '../../components/Button/Button';
-import { EducationFormModal } from '../../components/EducationFormModal/EducationFormModal';
-import { DocumentSlider } from '../../components/DocumentSlider/DocumentSlider';
+import { EducationForm } from '../../components/EducationForm/EducationForm';
+import { DocSlider } from '../../components/DocSlider/DocSlider';
 import styles from './EducationPage.module.scss';
 
 const studyFormLabels: Record<string, string> = {
@@ -99,7 +99,7 @@ const EducationPage: React.FC = () => {
                   </p>
                 </div>
                 <div className={styles.documentsSection}>
-                  <DocumentSlider documents={entry.documents} />
+                  <DocSlider documents={entry.documents} />
                 </div>
               </div>
             ))}
@@ -118,7 +118,7 @@ const EducationPage: React.FC = () => {
         <p className={styles.empty}>Нет добавленных образований</p>
       )}
 
-      <EducationFormModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <EducationForm isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 };

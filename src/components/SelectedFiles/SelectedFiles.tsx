@@ -3,14 +3,14 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import styles from './FileSlider.module.scss';
+import styles from './SelectedFiles.module.scss';
 
-interface FileSliderProps {
+interface SelectedFilesProps {
   files: File[];
   onRemove: (index: number) => void;
 }
 
-export const FileSlider: React.FC<FileSliderProps> = ({ files, onRemove }) => {
+export const SelectedFiles: React.FC<SelectedFilesProps> = ({ files, onRemove }) => {
   if (!files.length) {
     return <div className={styles.empty}>Нет загруженных документов</div>;
   }

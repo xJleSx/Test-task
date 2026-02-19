@@ -1,126 +1,189 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { educationSchema, EducationFormData } from '../../utils/validation';
+import { fileToDataURL } from '../../utils/fileUtils';
+import { Select } from '../Select/Select';
+import { Button } from '../Button/Button';
+import { SelectedFiles } from '../SelectedFiles/SelectedFiles';
 import { useEducationStore } from '../../store/educationStore';
-import { Button } from '../../components/Button/Button';
-import { EducationFormModal } from '../../components/EducationFormModal/EducationFormModal';
-import { DocumentSlider } from '../../components/DocumentSlider/DocumentSlider';
-import styles from './EducationPage.module.scss';
+import styles from './EducationForm.module.scss';
 
-const studyFormLabels: Record<string, string> = {
-  'full-time': 'Очное (дневное обучение)',
-  'part-time': 'Заочное',
-  'mixed': 'Очно-заочное',
-  'distance': 'Дистанционное'
-};
+const currentYear = new Date().getFullYear();
+const maxYear = currentYear + 10;
+const yearOptions = Array.from({ length: maxYear - 1980 + 1 }, (_, i) => ({
+  value: String(1980 + i),
+  label: String(1980 + i)
+}));
 
-const EducationPage: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { entries, removeEntry } = useEducationStore();
+const studyFormOptions = [
+  { value: 'full-time', label: 'Очная' },
+  { value: 'part-time', label: 'Заочная' },
+  { value: 'mixed', label: 'Очно-заочная' },
+  { value: 'distance', label: 'Дистанционная' }
+];
 
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
+interface EducationFormProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
 
-  const handleDeleteEntry = (id: number) => {
-    if (window.confirm('Удалить запись об образовании?')) {
-      removeEntry(id);
+export const EducationForm: React.FC<EducationFormProps> = ({ isOpen, onClose }) => {
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const { register, handleSubmit, control, reset, formState: { errors } } = useForm<EducationFormData>({
+    resolver: zodResolver(educationSchema),
+    defaultValues: {
+      institution: '',
+      specialty: '',
+      startYear: currentYear,
+      endYear: null,
+      studyForm: 'full-time',
+      documents: []
+    }
+  });
+
+  useEffect(() => {
+    if (isOpen) {
+      reset();
+      setSelectedFiles([]);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen, reset]);
+
+  if (!isOpen) return null;
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const filesArray = Array.from(e.target.files);
+      setSelectedFiles(prev => [...prev, ...filesArray]);
+    }
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
-  const checkScroll = () => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
-    const { scrollLeft, scrollWidth, clientWidth } = container;
-    setCanScrollLeft(scrollLeft > 0);
-    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
+  const handleRemoveFile = (index: number) => {
+    setSelectedFiles(prev => prev.filter((_, i) => i !== index));
   };
 
-  useEffect(() => {
-    checkScroll();
-    window.addEventListener('resize', checkScroll);
-    return () => window.removeEventListener('resize', checkScroll);
-  }, [entries]);
-
-  const scroll = (direction: 'left' | 'right') => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
-    const scrollAmount = 300;
-    container.scrollBy({
-      left: direction === 'left' ? -scrollAmount : scrollAmount,
-      behavior: 'smooth'
-    });
+  const onSubmit = async (data: EducationFormData) => {
+    const documents = await Promise.all(selectedFiles.map(fileToDataURL));
+    const finalData = { ...data, documents };
+    useEducationStore.getState().addEntry(finalData);
+    reset();
+    setSelectedFiles([]);
+    onClose();
   };
 
   return (
-    <div className={styles.page}>
-      <div className={styles.header}>
-        <h1>Образование</h1>
-        <Button
-          variant="add"
-          onClick={() => setIsModalOpen(true)}
-          icon={<span>+</span>}
-        >
-          Добавить
-        </Button>
-      </div>
-
-      {entries.length > 0 ? (
-        <div className={styles.cardsContainerWrapper}>
-          {canScrollLeft && (
-            <button
-              className={`${styles.scrollButton} ${styles.scrollLeft}`}
-              onClick={() => scroll('left')}
-              aria-label="Прокрутить влево"
-            >
-              ‹
-            </button>
-          )}
-          <div
-            className={styles.cardsContainer}
-            ref={scrollContainerRef}
-            onScroll={checkScroll}
-          >
-            {entries.map(entry => (
-              <div key={entry.id} className={styles.entryCard}>
-                <div className={styles.entryHeader}>
-                  <h3 title={entry.institution}>{entry.institution}</h3>
-                  <button
-                    className={styles.deleteEntryButton}
-                    onClick={() => handleDeleteEntry(entry.id)}
-                    title="Удалить запись"
-                  >
-                    ✕
-                  </button>
-                </div>
-                <div className={styles.entryDetails}>
-                  <p className={styles.specialty}>{entry.specialty}</p>
-                  <p className={styles.studyForm}>{studyFormLabels[entry.studyForm]}</p>
-                  <p className={styles.years}>
-                    {entry.startYear} — {entry.endYear || 'н.в.'} год
-                  </p>
-                </div>
-                <div className={styles.documentsSection}>
-                  <DocumentSlider documents={entry.documents} />
-                </div>
-              </div>
-            ))}
-          </div>
-          {canScrollRight && (
-            <button
-              className={`${styles.scrollButton} ${styles.scrollRight}`}
-              onClick={() => scroll('right')}
-              aria-label="Прокрутить вправо"
-            >
-              ›
-            </button>
-          )}
+    <div className={styles.overlay}>
+      <div className={styles.modal}>
+        <div className={styles.modalHeader}>
+          <h2 className={styles.title}>Добавить образование</h2>
+          <button className={styles.closeButton} onClick={onClose} aria-label="Закрыть">
+            ✕
+          </button>
         </div>
-      ) : (
-        <p className={styles.empty}>Нет добавленных образований</p>
-      )}
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+          <div className={styles.field}>
+            <label>Учебное заведение</label>
+            <textarea
+              {...register('institution')}
+              className={errors.institution ? styles.error : ''}
+            />
+            {errors.institution && <span className={styles.errorMessage}>{errors.institution.message}</span>}
+          </div>
 
-      <EducationFormModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+          <div className={styles.field}>
+            <label>Специальность</label>
+            <input
+              type="text"
+              {...register('specialty')}
+              className={errors.specialty ? styles.error : ''}
+            />
+            {errors.specialty && <span className={styles.errorMessage}>{errors.specialty.message}</span>}
+          </div>
+
+          <div className={styles.row}>
+            <div className={styles.field}>
+              <label>Год начала</label>
+              <Controller
+                name="startYear"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    options={yearOptions}
+                    value={String(field.value)}
+                    onChange={(val) => field.onChange(Number(val))}
+                    required
+                  />
+                )}
+              />
+              {errors.startYear && <span className={styles.errorMessage}>{errors.startYear.message}</span>}
+            </div>
+
+            <div className={styles.field}>
+              <label>Год окончания</label>
+              <Controller
+                name="endYear"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    options={[{ value: '', label: 'Не выбрано' }, ...yearOptions]}
+                    value={field.value ? String(field.value) : ''}
+                    onChange={(val) => field.onChange(val ? Number(val) : null)}
+                  />
+                )}
+              />
+              {errors.endYear && <span className={styles.errorMessage}>{errors.endYear.message}</span>}
+            </div>
+          </div>
+
+          <div className={styles.field}>
+            <label>Форма обучения</label>
+            <Controller
+              name="studyForm"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  options={studyFormOptions}
+                  value={field.value}
+                  onChange={field.onChange}
+                  required
+                />
+              )}
+            />
+            {errors.studyForm && <span className={styles.errorMessage}>{errors.studyForm.message}</span>}
+          </div>
+
+          <div className={styles.field}>
+            <label>Документы</label>
+            <input
+              type="file"
+              multiple
+              accept=".pdf,.jpg,.png,.doc,.docx"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+            />
+            <SelectedFiles files={selectedFiles} onRemove={handleRemoveFile} />
+          </div>
+
+          <div className={styles.actions}>
+            <Button type="button" variant="secondary" onClick={onClose}>Отмена</Button>
+            <Button type="submit">Сохранить</Button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
-
-export default EducationPage;
