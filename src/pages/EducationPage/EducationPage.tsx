@@ -16,7 +16,6 @@ const EducationPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { entries, updateEntry, removeEntry } = useEducationStore();
 
-  // Для горизонтального скролла карточек
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -34,13 +33,12 @@ const EducationPage: React.FC = () => {
     }
   };
 
-  // Проверка возможности скролла
   const checkScroll = () => {
     const container = scrollContainerRef.current;
     if (!container) return;
     const { scrollLeft, scrollWidth, clientWidth } = container;
     setCanScrollLeft(scrollLeft > 0);
-    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1); // небольшой допуск
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
   };
 
   useEffect(() => {
@@ -52,7 +50,7 @@ const EducationPage: React.FC = () => {
   const scroll = (direction: 'left' | 'right') => {
     const container = scrollContainerRef.current;
     if (!container) return;
-    const scrollAmount = 300; // примерная ширина карточки + отступ
+    const scrollAmount = 300;
     container.scrollBy({
       left: direction === 'left' ? -scrollAmount : scrollAmount,
       behavior: 'smooth'
@@ -105,15 +103,17 @@ const EducationPage: React.FC = () => {
                   <p><strong>Годы:</strong> {entry.startYear} - {entry.endYear || 'н.в.'}</p>
                   <p><strong>Форма:</strong> {studyFormLabels[entry.studyForm]}</p>
                 </div>
-                {entry.documents.length > 0 && (
-                  <div className={styles.documentsSection}>
-                    <h4>Документы</h4>
+                <div className={styles.documentsSection}>
+                  <h4>Документы</h4>
+                  {entry.documents.length > 0 ? (
                     <DocumentSlider
                       documents={entry.documents}
                       onDeleteDocument={(docIndex) => handleDeleteDocument(entry.id, docIndex)}
                     />
-                  </div>
-                )}
+                  ) : (
+                    <p className={styles.noDocuments}>Нет документов</p>
+                  )}
+                </div>
               </div>
             ))}
           </div>

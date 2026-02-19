@@ -36,11 +36,9 @@
   gap: 20px;
   overflow-x: auto;
   scroll-behavior: smooth;
-  padding: 4px 0 20px 0; /* пространство для тени при скролле */
+  padding: 4px 0 20px 0;
   width: 100%;
   -webkit-overflow-scrolling: touch;
-
-  /* скрыть стандартный скроллбар */
   scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;
@@ -48,13 +46,16 @@
 }
 
 .entryCard {
-  flex: 0 0 300px; /* фиксированная ширина карточки */
+  flex: 0 0 300px;
+  min-height: 360px; /* фиксированная минимальная высота для единообразия */
   background: white;
   border: 1px solid #dee2e6;
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   transition: box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
 
   &:hover {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -103,7 +104,7 @@
 }
 
 .documentsSection {
-  margin-top: 15px;
+  margin-top: auto; /* прижимает секцию документов к низу карточки */
   padding-top: 15px;
   border-top: 1px solid #e9ecef;
 
@@ -112,6 +113,14 @@
     font-size: 14px;
     color: #333;
   }
+}
+
+.noDocuments {
+  color: #999;
+  font-style: italic;
+  margin: 8px 0;
+  text-align: center;
+  font-size: 13px;
 }
 
 .scrollButton {
@@ -160,6 +169,7 @@
 
   .entryCard {
     flex: 0 0 260px;
+    min-height: 340px;
     padding: 15px;
   }
 
