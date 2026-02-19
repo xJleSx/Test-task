@@ -8,7 +8,7 @@ import { EducationDocument } from '../../types/education';
 
 interface DocumentSliderProps {
   documents: EducationDocument[];
-  onDeleteDocument?: (index: number) => void; // колбэк для удаления
+  onDeleteDocument?: (index: number) => void;
 }
 
 export const DocumentSlider: React.FC<DocumentSliderProps> = ({ documents, onDeleteDocument }) => {
@@ -17,7 +17,6 @@ export const DocumentSlider: React.FC<DocumentSliderProps> = ({ documents, onDel
   }
 
   const handleDocumentClick = (doc: EducationDocument, e: React.MouseEvent) => {
-    // Если клик по кнопке удаления, не открывать документ
     if ((e.target as HTMLElement).closest(`.${styles.deleteButton}`)) {
       return;
     }
@@ -36,19 +35,15 @@ export const DocumentSlider: React.FC<DocumentSliderProps> = ({ documents, onDel
           prevEl: `.${styles.prevButton}`,
           nextEl: `.${styles.nextButton}`,
         }}
-        spaceBetween={20}
-        slidesPerView={1}
-        breakpoints={{
-          640: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 }
-        }}
+        spaceBetween={10}
+        slidesPerView="auto"  /* авто-ширина, чтобы слайды подстраивались под контент */
         className={styles.swiper}
       >
         {documents.map((doc, idx) => (
-          <SwiperSlide key={idx}>
+          <SwiperSlide key={idx} className={styles.slide}> {/* добавили класс */}
             <div className={styles.documentCard} onClick={(e) => handleDocumentClick(doc, e)}>
-              <div className={styles.icon}>📄</div>
-              <div className={styles.name}>{doc.name}</div>
+              <span className={styles.icon}>📄</span>
+              <span className={styles.name} title={doc.name}>{doc.name}</span>
               {onDeleteDocument && (
                 <button
                   className={styles.deleteButton}
