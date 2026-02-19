@@ -46,18 +46,50 @@
 
 ## Структура проекта
 
-src/
-├── components/          
-│   ├── Button/
-│   ├── Select/
-│   ├── DocSlider/
-│   ├── SelectedFiles/
-│   └── EducationForm/
-├── pages/               
-│   └── EducationPage/
-├── store/               
-├── types/               
-├── utils/               
-├── styles/              
-├── App.tsx
-└── main.tsx
+ project-root/                         
+ ├── .gitignore                                                             
+ ├── README.md                                    
+ ├── index.html  
+ ├── package.json   
+ ├── package-lock.json   
+ ├── tsconfig.json    
+ ├── tsconfig.node.json    
+ ├── vite.config.ts    
+ ├── vite-env.d.ts    
+ └── src/     
+     ├── components/  
+     │   ├── Button/  
+     │   │    ├── Button.tsx  
+     │   │    └── Button.module.scss  
+     │   ├── Select/  
+     │   │    ├── Select.tsx  
+     │   │    └── Select.module.scss   
+     │   ├── DocSlider/   
+     │   │    ├── DocSlider.tsx   
+     │   │    └── DocSlider.module.scss  
+     │   ├── SelectedFiles/   
+     │   │    ├── SelectedFiles.tsx   
+     │   │    └── SelectedFiles.module.scss   
+     │   └── EducationForm/   
+     │        ├── EducationForm.tsx   
+     │        └── EducationForm.module.scss   
+     ├── pages/   
+     │   └── EducationPage/   
+     │        ├── EducationPage.tsx   
+     │        └── EducationPage.module.scss  
+     ├── store/   
+     │    └── educationStore.ts  
+     ├── types/   
+     │    └── education.ts   
+     ├── utils/   
+     │    ├── fileUtils.ts   
+     │    └── validation.ts   
+     ├── styles/   
+     │    ├── global.scss   
+     │    └── variables.scss   
+     ├── App.tsx   
+     └── main.tsx    
+     │   ├── global.scss   
+     │   └── variables.scss   
+     ├── App.tsx   
+     └── main.tsx   
