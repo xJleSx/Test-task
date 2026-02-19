@@ -47,7 +47,7 @@
 
 .entryCard {
   flex: 0 0 300px;
-  min-height: 360px; /* фиксированная минимальная высота для единообразия */
+  min-height: 380px; /* Увеличено, чтобы вместить фиксированную высоту документов */
   background: white;
   border: 1px solid #dee2e6;
   border-radius: 8px;
@@ -104,23 +104,30 @@
 }
 
 .documentsSection {
-  margin-top: auto; /* прижимает секцию документов к низу карточки */
   padding-top: 15px;
   border-top: 1px solid #e9ecef;
+  min-height: 80px; /* Фиксированная высота для единообразия */
+  display: flex;
+  flex-direction: column;
 
   h4 {
     margin: 0 0 10px 0;
     font-size: 14px;
     color: #333;
+    flex-shrink: 0;
   }
 }
 
 .noDocuments {
   color: #999;
   font-style: italic;
-  margin: 8px 0;
+  margin: 0;
   text-align: center;
   font-size: 13px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .scrollButton {
@@ -169,7 +176,7 @@
 
   .entryCard {
     flex: 0 0 260px;
-    min-height: 340px;
+    min-height: 360px;
     padding: 15px;
   }
 

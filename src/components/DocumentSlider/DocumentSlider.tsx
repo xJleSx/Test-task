@@ -8,18 +8,14 @@ import { EducationDocument } from '../../types/education';
 
 interface DocumentSliderProps {
   documents: EducationDocument[];
-  onDeleteDocument?: (index: number) => void;
 }
 
-export const DocumentSlider: React.FC<DocumentSliderProps> = ({ documents, onDeleteDocument }) => {
+export const DocumentSlider: React.FC<DocumentSliderProps> = ({ documents }) => {
   if (!documents.length) {
     return <p className={styles.empty}>Нет загруженных документов</p>;
   }
 
-  const handleDocumentClick = (doc: EducationDocument, e: React.MouseEvent) => {
-    if ((e.target as HTMLElement).closest(`.${styles.deleteButton}`)) {
-      return;
-    }
+  const handleDocumentClick = (doc: EducationDocument) => {
     const link = document.createElement('a');
     link.href = doc.dataURL;
     link.download = doc.name;
@@ -36,26 +32,18 @@ export const DocumentSlider: React.FC<DocumentSliderProps> = ({ documents, onDel
           nextEl: `.${styles.nextButton}`,
         }}
         spaceBetween={10}
-        slidesPerView="auto"  /* авто-ширина, чтобы слайды подстраивались под контент */
+        slidesPerView={1}
+        breakpoints={{
+          640: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 }
+        }}
         className={styles.swiper}
       >
         {documents.map((doc, idx) => (
-          <SwiperSlide key={idx} className={styles.slide}> {/* добавили класс */}
-            <div className={styles.documentCard} onClick={(e) => handleDocumentClick(doc, e)}>
-              <span className={styles.icon}>📄</span>
-              <span className={styles.name} title={doc.name}>{doc.name}</span>
-              {onDeleteDocument && (
-                <button
-                  className={styles.deleteButton}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDeleteDocument(idx);
-                  }}
-                  title="Удалить документ"
-                >
-                  ✕
-                </button>
-              )}
+          <SwiperSlide key={idx}>
+            <div className={styles.documentCard} onClick={() => handleDocumentClick(doc)}>
+              <div className={styles.icon}>📄</div>
+              <div className={styles.name} title={doc.name}>{doc.name}</div>
             </div>
           </SwiperSlide>
         ))}

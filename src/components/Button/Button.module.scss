@@ -35,7 +35,7 @@
 }
 
 .add {
-  background: #FFC107; /* жёлтая заливка */
+  background: #FFC107;
   border-radius: 40px;
   color: #333;
   padding: 8px 24px;
@@ -51,8 +51,9 @@
     justify-content: center;
     width: 24px;
     height: 24px;
-    background: black;
-    color: white;
+    background: #FFC107; /* жёлтый фон */
+    border: 2px solid black; /* чёрная обводка */
+    color: black; /* чёрный плюс */
     border-radius: 50%;
     font-size: 18px;
     line-height: 1;

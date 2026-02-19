@@ -18,12 +18,22 @@ export const educationSchema = z.object({
     dataURL: z.string()
   })).optional().default([])
 }).refine(data => {
+  // Если endYear указан, он должен быть не меньше startYear
   if (data.endYear && data.endYear < data.startYear) {
     return false;
   }
   return true;
 }, {
   message: 'Год окончания не может быть раньше года начала',
+  path: ['endYear']
+}).refine(data => {
+  // Если endYear указан, разница не должна превышать 11 лет
+  if (data.endYear && (data.endYear - data.startYear > 11)) {
+    return false;
+  }
+  return true;
+}, {
+  message: 'Продолжительность обучения не может превышать 11 лет',
   path: ['endYear']
 });
 

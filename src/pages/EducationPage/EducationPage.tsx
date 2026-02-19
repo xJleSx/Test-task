@@ -14,18 +14,11 @@ const studyFormLabels: Record<string, string> = {
 
 const EducationPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { entries, updateEntry, removeEntry } = useEducationStore();
+  const { entries, removeEntry } = useEducationStore(); // удалили updateEntry, так как не используется
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
-
-  const handleDeleteDocument = (entryId: number, docIndex: number) => {
-    const entry = entries.find(e => e.id === entryId);
-    if (!entry) return;
-    const updatedDocuments = entry.documents.filter((_, idx) => idx !== docIndex);
-    updateEntry(entryId, { documents: updatedDocuments });
-  };
 
   const handleDeleteEntry = (id: number) => {
     if (window.confirm('Удалить запись об образовании?')) {
@@ -106,10 +99,7 @@ const EducationPage: React.FC = () => {
                 <div className={styles.documentsSection}>
                   <h4>Документы</h4>
                   {entry.documents.length > 0 ? (
-                    <DocumentSlider
-                      documents={entry.documents}
-                      onDeleteDocument={(docIndex) => handleDeleteDocument(entry.id, docIndex)}
-                    />
+                    <DocumentSlider documents={entry.documents} />
                   ) : (
                     <p className={styles.noDocuments}>Нет документов</p>
                   )}
