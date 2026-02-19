@@ -1,0 +1,60 @@
+.button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.primary {
+  background: #FFC107;
+  color: #333;
+
+  &:hover {
+    background: #FFA000;
+  }
+
+  &:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+  }
+}
+
+.secondary {
+  background: #6c757d;
+  color: white;
+
+  &:hover {
+    background: #5a6268;
+  }
+}
+
+.add {
+  background: #FFC107; /* жёлтая заливка */
+  border-radius: 40px;
+  color: #333;
+  padding: 8px 24px;
+  font-weight: 500;
+
+  &:hover {
+    background: #FFA000;
+  }
+
+  .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: black;
+    color: white;
+    border-radius: 50%;
+    font-size: 18px;
+    line-height: 1;
+  }
+}
