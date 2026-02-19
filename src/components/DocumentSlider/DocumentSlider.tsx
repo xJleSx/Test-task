@@ -27,17 +27,9 @@ export const DocumentSlider: React.FC<DocumentSliderProps> = ({ documents }) => 
     <div className={styles.sliderWrapper}>
       <Swiper
         modules={[Navigation]}
-        navigation={{
-          prevEl: `.${styles.prevButton}`,
-          nextEl: `.${styles.nextButton}`,
-        }}
+        navigation={true}
         spaceBetween={8}
-        slidesPerView={1}
-        direction="horizontal"
-        breakpoints={{
-          640: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 }
-        }}
+        slidesPerView="auto"
         className={styles.swiper}
         watchOverflow={true}
       >
@@ -50,12 +42,6 @@ export const DocumentSlider: React.FC<DocumentSliderProps> = ({ documents }) => 
           </SwiperSlide>
         ))}
       </Swiper>
-      <button className={`${styles.navButton} ${styles.prevButton}`} aria-label="Previous slide">
-        ‹
-      </button>
-      <button className={`${styles.navButton} ${styles.nextButton}`} aria-label="Next slide">
-        ›
-      </button>
     </div>
   );
 };

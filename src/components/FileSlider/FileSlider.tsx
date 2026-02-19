@@ -19,16 +19,9 @@ export const FileSlider: React.FC<FileSliderProps> = ({ files, onRemove }) => {
     <div className={styles.sliderWrapper}>
       <Swiper
         modules={[Navigation]}
-        navigation={{
-          prevEl: `.${styles.prevButton}`,
-          nextEl: `.${styles.nextButton}`,
-        }}
+        navigation={true}
         spaceBetween={8}
-        slidesPerView={1}
-        breakpoints={{
-          400: { slidesPerView: 2 },
-          600: { slidesPerView: 3 }
-        }}
+        slidesPerView="auto"
         className={styles.swiper}
         watchOverflow={true}
       >
@@ -54,12 +47,6 @@ export const FileSlider: React.FC<FileSliderProps> = ({ files, onRemove }) => {
           </SwiperSlide>
         ))}
       </Swiper>
-      <button className={`${styles.navButton} ${styles.prevButton}`} aria-label="Previous slide">
-        ‹
-      </button>
-      <button className={`${styles.navButton} ${styles.nextButton}`} aria-label="Next slide">
-        ›
-      </button>
     </div>
   );
 };

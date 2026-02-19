@@ -85,16 +85,15 @@ export const EducationFormModal: React.FC<EducationFormModalProps> = ({ isOpen, 
     onClose();
   };
 
-  const handleOverlayClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
-
   return (
-    <div className={styles.overlay} onClick={handleOverlayClick}>
+    <div className={styles.overlay}>
       <div className={styles.modal}>
-        <h2 className={styles.title}>Добавить образование</h2>
+        <div className={styles.modalHeader}>
+          <h2 className={styles.title}>Добавить образование</h2>
+          <button className={styles.closeButton} onClick={onClose} aria-label="Закрыть">
+            ✕
+          </button>
+        </div>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <div className={styles.field}>
             <label>Учебное заведение</label>
@@ -176,7 +175,6 @@ export const EducationFormModal: React.FC<EducationFormModalProps> = ({ isOpen, 
               ref={fileInputRef}
               onChange={handleFileChange}
             />
-            {/* Всегда рендерим FileSlider, чтобы зарезервировать место */}
             <FileSlider files={selectedFiles} onRemove={handleRemoveFile} />
           </div>
 

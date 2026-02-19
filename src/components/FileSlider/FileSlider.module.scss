@@ -8,7 +8,54 @@
 .swiper {
   width: 100%;
   height: 100%;
-  padding: 2px 0;
+  padding: 2px 20px;
+  box-sizing: border-box;
+
+  :global(.swiper-slide) {
+    width: auto !important;
+  }
+
+  :global(.swiper-button-prev),
+  :global(.swiper-button-next) {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
+    border: 1px solid #FFC107;
+    color: #FFC107;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    font-size: 14px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: background 0.2s;
+    margin-top: 0;
+    transform: translateY(-50%);
+    top: 50%;
+
+    &:hover {
+      background: #FFF3E0;
+    }
+
+    &::after {
+      font-size: 14px;
+      font-weight: bold;
+    }
+  }
+
+  :global(.swiper-button-prev) {
+    left: 0;
+  }
+
+  :global(.swiper-button-next) {
+    right: 0;
+  }
+
+  :global(.swiper-button-disabled) {
+    display: none;
+  }
 }
 
 .fileCard {
@@ -21,9 +68,9 @@
   align-items: center;
   gap: 4px;
   height: 42px;
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
+  width: 150px;
+  max-width: 150px;
+  min-width: 150px;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -61,43 +108,6 @@
 
   &:hover {
     background: rgba(220, 53, 69, 0.1);
-  }
-}
-
-.navButton {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: white;
-  border: 1px solid #FFC107;
-  color: #FFC107;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  cursor: pointer;
-  font-size: 14px;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-
-  &:hover {
-    background: #FFF3E0;
-  }
-
-  &.prevButton {
-    left: -10px;
-  }
-
-  &.nextButton {
-    right: -10px;
-  }
-
-  &.swiper-button-disabled,
-  &.swiper-button-lock {
-    display: none;
   }
 }
 

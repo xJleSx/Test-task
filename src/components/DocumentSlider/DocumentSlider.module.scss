@@ -1,6 +1,6 @@
 .sliderWrapper {
   position: relative;
-  margin: 0 15px;
+  margin: 0;
   height: 100%;
   min-height: 0;
   overflow: hidden;
@@ -10,18 +10,53 @@
 .swiper {
   width: 100%;
   height: 100%;
-  padding: 2px 0;
+  padding: 2px 20px;
+  box-sizing: border-box;
 
   :global(.swiper-slide) {
-    min-width: 0;
-    width: 100% !important;
-    max-width: 100% !important;
-    flex-shrink: 1 !important;
-    overflow: hidden !important;
+    width: auto !important;
   }
 
-  :global(.swiper-wrapper) {
-    flex-direction: row !important;
+  :global(.swiper-button-prev),
+  :global(.swiper-button-next) {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
+    border: 1px solid #FFC107;
+    color: #FFC107;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    font-size: 14px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: background 0.2s;
+    margin-top: 0;
+    transform: translateY(-50%);
+    top: 50%;
+
+    &:hover {
+      background: #FFF3E0;
+    }
+
+    &::after {
+      font-size: 14px;
+      font-weight: bold;
+    }
+  }
+
+  :global(.swiper-button-prev) {
+    left: 0;
+  }
+
+  :global(.swiper-button-next) {
+    right: 0;
+  }
+
+  :global(.swiper-button-disabled) {
+    display: none;
   }
 }
 
@@ -37,9 +72,9 @@
   align-items: center;
   gap: 4px;
   height: 32px;
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
+  width: 150px;
+  max-width: 150px;
+  min-width: 150px;
   box-sizing: border-box;
   overflow: hidden;
 
@@ -61,43 +96,6 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.navButton {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: white;
-  border: 1px solid #FFC107;
-  color: #FFC107;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  cursor: pointer;
-  font-size: 14px;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-
-  &:hover {
-    background: #FFF3E0;
-  }
-
-  &.prevButton {
-    left: -18px;
-  }
-
-  &.nextButton {
-    right: -18px;
-  }
-
-  &.swiper-button-disabled,
-  &.swiper-button-lock {
-    display: none;
-  }
 }
 
 .empty {
