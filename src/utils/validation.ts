@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const currentYear = new Date().getFullYear();
-const maxYear = currentYear + 10; // допустимый максимум для годов
+const maxYear = currentYear + 10;
 
 export const educationSchema = z.object({
   institution: z.string().min(1, 'Обязательное поле').max(256),
@@ -18,7 +18,6 @@ export const educationSchema = z.object({
     dataURL: z.string()
   })).optional().default([])
 }).refine(data => {
-  // Если endYear указан, он должен быть не меньше startYear
   if (data.endYear && data.endYear < data.startYear) {
     return false;
   }
@@ -27,13 +26,20 @@ export const educationSchema = z.object({
   message: 'Год окончания не может быть раньше года начала',
   path: ['endYear']
 }).refine(data => {
-  // Если endYear указан, разница не должна превышать 11 лет
   if (data.endYear && (data.endYear - data.startYear > 11)) {
     return false;
   }
   return true;
 }, {
   message: 'Продолжительность обучения не может превышать 11 лет',
+  path: ['endYear']
+}).refine(data => {
+  if (data.endYear && (data.endYear - data.startYear < 1)) {
+    return false;
+  }
+  return true;
+}, {
+  message: 'Минимальная продолжительность обучения — 1 год',
   path: ['endYear']
 });
 

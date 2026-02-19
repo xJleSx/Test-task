@@ -46,8 +46,8 @@
 }
 
 .entryCard {
-  flex: 0 0 300px;
-  min-height: 380px;
+  flex: 0 0 507px;               // увеличено с 390px
+  height: 380px;
   background: white;
   border: 1px solid #dee2e6;
   border-radius: 8px;
@@ -56,6 +56,7 @@
   transition: box-shadow 0.2s;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 
   &:hover {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -117,10 +118,11 @@
 .documentsSection {
   padding-top: 15px;
   border-top: 1px solid #e9ecef;
-  height: 80px; /* фиксированная высота */
+  height: 80px;
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* обрезаем всё, что выходит за пределы */
+  overflow: hidden;
+  width: 100%;
 
   h4 {
     margin: 0 0 10px 0;
@@ -129,10 +131,10 @@
     flex-shrink: 0;
   }
 
-  // DocumentSlider занимает оставшееся место
   > :last-child {
     flex: 1;
     min-height: 0;
+    width: 100%;
   }
 }
 
@@ -193,8 +195,8 @@
   }
 
   .entryCard {
-    flex: 0 0 260px;
-    min-height: 360px;
+    flex: 0 0 440px;               // увеличено с 338px
+    height: 360px;
     padding: 15px;
   }
 

@@ -1,51 +1,31 @@
 .sliderWrapper {
   position: relative;
-  margin: 0 15px;
-  height: 100%;
-  min-height: 0;
-  overflow: hidden;
   width: 100%;
+  height: 52px;
+  margin: 0;
 }
 
 .swiper {
   width: 100%;
   height: 100%;
   padding: 2px 0;
-
-  :global(.swiper-slide) {
-    min-width: 0;
-    width: 100% !important;
-    max-width: 100% !important;
-    flex-shrink: 1 !important;
-    overflow: hidden !important;
-  }
-
-  :global(.swiper-wrapper) {
-    flex-direction: row !important;
-  }
 }
 
-.documentCard {
+.fileCard {
   position: relative;
   background: #f8f9fa;
   border: 1px solid #dee2e6;
   border-radius: 4px;
   padding: 4px 6px;
-  cursor: pointer;
-  transition: background 0.2s;
   display: flex;
   align-items: center;
   gap: 4px;
-  height: 32px;
+  height: 42px;
   width: 100%;
   max-width: 100%;
   min-width: 0;
   box-sizing: border-box;
   overflow: hidden;
-
-  &:hover {
-    background: #e9ecef;
-  }
 }
 
 .icon {
@@ -61,6 +41,27 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.removeButton {
+  background: none;
+  border: none;
+  color: #dc3545;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 2px;
+  line-height: 1;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+
+  &:hover {
+    background: rgba(220, 53, 69, 0.1);
+  }
 }
 
 .navButton {
@@ -87,11 +88,11 @@
   }
 
   &.prevButton {
-    left: -18px;
+    left: -10px;
   }
 
   &.nextButton {
-    right: -18px;
+    right: -10px;
   }
 
   &.swiper-button-disabled,
@@ -105,4 +106,8 @@
   color: #6c757d;
   padding: 10px;
   font-size: 12px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

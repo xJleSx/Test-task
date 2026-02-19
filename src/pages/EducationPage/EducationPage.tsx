@@ -14,7 +14,7 @@ const studyFormLabels: Record<string, string> = {
 
 const EducationPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { entries, removeEntry } = useEducationStore(); // удалили updateEntry, так как не используется
+  const { entries, removeEntry } = useEducationStore();
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -82,7 +82,7 @@ const EducationPage: React.FC = () => {
             {entries.map(entry => (
               <div key={entry.id} className={styles.entryCard}>
                 <div className={styles.entryHeader}>
-                  <h3>{entry.institution}</h3>
+                  <h3 title={entry.institution}>{entry.institution}</h3>
                   <button
                     className={styles.deleteEntryButton}
                     onClick={() => handleDeleteEntry(entry.id)}

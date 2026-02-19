@@ -11,9 +11,9 @@ export const useEducationStore = create<EducationStore>()(
       })),
       updateEntry: (id, updatedEntry) => set((state) => ({
         entries: state.entries.map(entry => 
-        entry.id === id ? { ...entry, ...updatedEntry } : entry
-  )
-})),
+          entry.id === id ? { ...entry, ...updatedEntry } : entry
+        )
+      })),
       removeEntry: (id) => set((state) => ({
         entries: state.entries.filter(entry => entry.id !== id)
       })),

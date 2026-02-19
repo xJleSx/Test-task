@@ -5,6 +5,7 @@ import { educationSchema, EducationFormData } from '../../utils/validation';
 import { fileToDataURL } from '../../utils/fileUtils';
 import { CustomSelect } from '../CustomSelect/CustomSelect';
 import { Button } from '../Button/Button';
+import { FileSlider } from '../FileSlider/FileSlider';
 import { useEducationStore } from '../../store/educationStore';
 import styles from './EducationFormModal.module.scss';
 
@@ -45,6 +46,11 @@ export const EducationFormModal: React.FC<EducationFormModalProps> = ({ isOpen, 
 
   useEffect(() => {
     if (isOpen) {
+      reset();
+      setSelectedFiles([]);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -52,7 +58,7 @@ export const EducationFormModal: React.FC<EducationFormModalProps> = ({ isOpen, 
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isOpen]);
+  }, [isOpen, reset]);
 
   if (!isOpen) return null;
 
@@ -61,7 +67,6 @@ export const EducationFormModal: React.FC<EducationFormModalProps> = ({ isOpen, 
       const filesArray = Array.from(e.target.files);
       setSelectedFiles(prev => [...prev, ...filesArray]);
     }
-    // Очищаем input, чтобы можно было выбрать тот же файл снова
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -72,18 +77,18 @@ export const EducationFormModal: React.FC<EducationFormModalProps> = ({ isOpen, 
   };
 
   const onSubmit = async (data: EducationFormData) => {
-    // Конвертируем файлы в base64
     const documents = await Promise.all(selectedFiles.map(fileToDataURL));
     const finalData = { ...data, documents };
     useEducationStore.getState().addEntry(finalData);
-    // Сброс формы и состояния
     reset();
     setSelectedFiles([]);
     onClose();
   };
 
   const handleOverlayClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) onClose();
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
   };
 
   return (
@@ -92,9 +97,7 @@ export const EducationFormModal: React.FC<EducationFormModalProps> = ({ isOpen, 
         <h2 className={styles.title}>Добавить образование</h2>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <div className={styles.field}>
-            <label>
-              Учебное заведение <span className={styles.requiredStar} title="Обязательное поле">*</span>
-            </label>
+            <label>Учебное заведение</label>
             <textarea
               {...register('institution')}
               className={errors.institution ? styles.error : ''}
@@ -103,9 +106,7 @@ export const EducationFormModal: React.FC<EducationFormModalProps> = ({ isOpen, 
           </div>
 
           <div className={styles.field}>
-            <label>
-              Специальность <span className={styles.requiredStar} title="Обязательное поле">*</span>
-            </label>
+            <label>Специальность</label>
             <input
               type="text"
               {...register('specialty')}
@@ -116,9 +117,7 @@ export const EducationFormModal: React.FC<EducationFormModalProps> = ({ isOpen, 
 
           <div className={styles.row}>
             <div className={styles.field}>
-              <label>
-                Год начала <span className={styles.requiredStar} title="Обязательное поле">*</span>
-              </label>
+              <label>Год начала</label>
               <Controller
                 name="startYear"
                 control={control}
@@ -152,9 +151,7 @@ export const EducationFormModal: React.FC<EducationFormModalProps> = ({ isOpen, 
           </div>
 
           <div className={styles.field}>
-            <label>
-              Форма обучения <span className={styles.requiredStar} title="Обязательное поле">*</span>
-            </label>
+            <label>Форма обучения</label>
             <Controller
               name="studyForm"
               control={control}
@@ -179,23 +176,8 @@ export const EducationFormModal: React.FC<EducationFormModalProps> = ({ isOpen, 
               ref={fileInputRef}
               onChange={handleFileChange}
             />
-            {selectedFiles.length > 0 && (
-              <ul className={styles.fileList}>
-                {selectedFiles.map((file, index) => (
-                  <li key={index} className={styles.fileItem}>
-                    <span className={styles.fileName}>{file.name}</span>
-                    <button
-                      type="button"
-                      className={styles.removeFileButton}
-                      onClick={() => handleRemoveFile(index)}
-                      title="Удалить файл"
-                    >
-                      ✕
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
+            {/* Всегда рендерим FileSlider, чтобы зарезервировать место */}
+            <FileSlider files={selectedFiles} onRemove={handleRemoveFile} />
           </div>
 
           <div className={styles.actions}>

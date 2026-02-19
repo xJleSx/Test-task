@@ -31,7 +31,7 @@ export const DocumentSlider: React.FC<DocumentSliderProps> = ({ documents }) => 
           prevEl: `.${styles.prevButton}`,
           nextEl: `.${styles.nextButton}`,
         }}
-        spaceBetween={8} /* чуть меньше отступ */
+        spaceBetween={8}
         slidesPerView={1}
         direction="horizontal"
         breakpoints={{
@@ -39,7 +39,6 @@ export const DocumentSlider: React.FC<DocumentSliderProps> = ({ documents }) => 
           1024: { slidesPerView: 3 }
         }}
         className={styles.swiper}
-        /* добавлены watchOverflow для корректного скрытия кнопок */
         watchOverflow={true}
       >
         {documents.map((doc, idx) => (
