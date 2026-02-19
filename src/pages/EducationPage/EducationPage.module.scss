@@ -47,7 +47,7 @@
 
 .entryCard {
   flex: 0 0 300px;
-  min-height: 380px; /* Увеличено, чтобы вместить фиксированную высоту документов */
+  min-height: 380px;
   background: white;
   border: 1px solid #dee2e6;
   border-radius: 8px;
@@ -98,15 +98,19 @@
   p {
     margin: 5px 0;
     color: #555;
-    word-break: break-word;
     font-size: 14px;
+    height: 20px;
+    line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 
 .documentsSection {
   padding-top: 15px;
   border-top: 1px solid #e9ecef;
-  min-height: 80px; /* Фиксированная высота для единообразия */
+  min-height: 80px;
   display: flex;
   flex-direction: column;
 
