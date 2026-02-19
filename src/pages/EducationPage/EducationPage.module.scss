@@ -1,18 +1,28 @@
 .page {
-  max-width: 1600px;
+  max-width: 1920px;
   margin: 0 auto;
   padding: 24px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 12px;
 
   h1 {
     margin: 0;
     color: #333;
+    font-size: clamp(24px, 5vw, 32px);
+  }
+
+  button {
+    flex-shrink: 0;
+    white-space: nowrap;
   }
 }
 
@@ -29,6 +39,7 @@
   display: flex;
   align-items: center;
   margin-top: 20px;
+  width: 100%;
 }
 
 .cardsContainer {
@@ -40,13 +51,14 @@
   width: 100%;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+
   &::-webkit-scrollbar {
     display: none;
   }
 }
 
 .entryCard {
-  flex: 0 0 507px;
+  flex: 0 0 clamp(280px, 30vw, 600px);
   height: 380px;
   background: white;
   border: none;
@@ -140,6 +152,8 @@
   .years {
     font-weight: 500;
     color: #6c757d;
+    white-space: nowrap;
+    overflow: visible;
   }
 }
 
@@ -151,6 +165,18 @@
   flex-direction: column;
   overflow: hidden;
   width: 100%;
+}
+
+.noDocuments {
+  color: #999;
+  font-style: italic;
+  margin: 0;
+  text-align: center;
+  font-size: 13px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .scrollButton {
@@ -187,21 +213,30 @@
   }
 }
 
-@media (max-width: 375px) {
-  .page {
-    padding: 16px;
-  }
-
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
+@media (min-width: 1921px) {
   .entryCard {
-    flex: 0 0 440px;
-    height: 360px;
-    padding: 20px;
+    flex-basis: clamp(400px, 25vw, 800px);
+  }
+
+  .page {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    gap: 10px;
+
+    button {
+      width: auto;
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+  }
+
+  .empty {
+    padding: 30px 20px;
+    font-size: 15px;
   }
 
   .scrollButton {
@@ -215,6 +250,64 @@
 
     &.scrollRight {
       right: -12px;
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .page {
+    padding: 16px;
+  }
+
+  .entryCard {
+    padding: 20px;
+    height: 360px;
+  }
+
+  .scrollButton {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+
+    &.scrollLeft {
+      left: -10px;
+    }
+
+    &.scrollRight {
+      right: -10px;
+    }
+  }
+}
+
+@media (max-width: 320px) {
+  .page {
+    padding: 12px;
+  }
+
+  .entryCard {
+    flex-basis: clamp(240px, 70vw, 280px);
+    padding: 16px;
+    height: 340px;
+  }
+
+  .scrollButton {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+
+    &.scrollLeft {
+      left: -8px;
+    }
+
+    &.scrollRight {
+      right: -8px;
+    }
+  }
+
+  .header {
+    button {
+      padding: 6px 12px;
+      font-size: 13px;
     }
   }
 }
