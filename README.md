@@ -33,7 +33,6 @@
 1. Клонируйте репозиторий:
 
    git clone https://github.com/xJleSx/Test-task
-   cd education-form-app
 
 2. Установите зависимости:
 
